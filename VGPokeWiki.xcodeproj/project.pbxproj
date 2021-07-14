@@ -14,6 +14,7 @@
 		B79C9123269E0746003106F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B79C9121269E0746003106F5 /* LaunchScreen.storyboard */; };
 		B79C912E269E0747003106F5 /* VGPokeWikiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79C912D269E0747003106F5 /* VGPokeWikiTests.swift */; };
 		B79C9139269E0747003106F5 /* VGPokeWikiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79C9138269E0747003106F5 /* VGPokeWikiUITests.swift */; };
+		B79C915C269EBE25003106F5 /* PokemonDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79C915B269EBE25003106F5 /* PokemonDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		B79C9134269E0747003106F5 /* VGPokeWikiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VGPokeWikiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B79C9138269E0747003106F5 /* VGPokeWikiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VGPokeWikiUITests.swift; sourceTree = "<group>"; };
 		B79C913A269E0747003106F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B79C915B269EBE25003106F5 /* PokemonDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +99,10 @@
 		B79C9115269E0746003106F5 /* VGPokeWiki */ = {
 			isa = PBXGroup;
 			children = (
-				B79C9116269E0746003106F5 /* AppDelegate.swift */,
-				B79C9118269E0746003106F5 /* SceneDelegate.swift */,
-				B79C911A269E0746003106F5 /* HomeViewController.swift */,
-				B79C911F269E0746003106F5 /* Assets.xcassets */,
-				B79C9121269E0746003106F5 /* LaunchScreen.storyboard */,
 				B79C9124269E0746003106F5 /* Info.plist */,
+				B79C915A269EBD29003106F5 /* Application */,
+				B79C9158269EBD29003106F5 /* HomeStory */,
+				B79C9159269EBD29003106F5 /* PokemonDetailsStory */,
 			);
 			path = VGPokeWiki;
 			sourceTree = "<group>";
@@ -123,6 +123,33 @@
 				B79C913A269E0747003106F5 /* Info.plist */,
 			);
 			path = VGPokeWikiUITests;
+			sourceTree = "<group>";
+		};
+		B79C9158269EBD29003106F5 /* HomeStory */ = {
+			isa = PBXGroup;
+			children = (
+				B79C911A269E0746003106F5 /* HomeViewController.swift */,
+			);
+			path = HomeStory;
+			sourceTree = "<group>";
+		};
+		B79C9159269EBD29003106F5 /* PokemonDetailsStory */ = {
+			isa = PBXGroup;
+			children = (
+				B79C915B269EBE25003106F5 /* PokemonDetailsViewController.swift */,
+			);
+			path = PokemonDetailsStory;
+			sourceTree = "<group>";
+		};
+		B79C915A269EBD29003106F5 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				B79C9116269E0746003106F5 /* AppDelegate.swift */,
+				B79C9118269E0746003106F5 /* SceneDelegate.swift */,
+				B79C911F269E0746003106F5 /* Assets.xcassets */,
+				B79C9121269E0746003106F5 /* LaunchScreen.storyboard */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +284,7 @@
 				B79C911B269E0746003106F5 /* HomeViewController.swift in Sources */,
 				B79C9117269E0746003106F5 /* AppDelegate.swift in Sources */,
 				B79C9119269E0746003106F5 /* SceneDelegate.swift in Sources */,
+				B79C915C269EBE25003106F5 /* PokemonDetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

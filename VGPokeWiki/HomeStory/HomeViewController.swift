@@ -9,11 +9,19 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
+    // MARK: Properties
+    // MARK: ViewController Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
-        // Do any additional setup after loading the view.
     }
+
+    // MARK: UI Creation
+    // MARK: Events
+    // MARK: Public Methods
+    // MARK: Private Methods
+    // MARK: Extensions
 
 }
 

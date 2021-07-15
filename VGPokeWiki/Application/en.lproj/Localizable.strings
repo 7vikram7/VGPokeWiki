@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  VGPokeWiki
+
+  Created by Vicky's Red Devil on 7/14/21.
+  
+*/
+
+//Home Story
+
+"Home_SearchBar_Title" = "Pokemon name/id (eg. Bulbasaur/1)";
+"Home_ListItem_SubTitlePrefix" = "Pokemon ID: ";

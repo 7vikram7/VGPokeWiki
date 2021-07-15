@@ -10,3 +10,5 @@
 
 "Home_SearchBar_Title" = "Pokemon name/id (eg. Bulbasaur/1)";
 "Home_ListItem_SubTitlePrefix" = "Pokemon ID: ";
+"Home_ClearSort_Title" = "Clear";
+

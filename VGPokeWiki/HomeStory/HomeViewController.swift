@@ -7,26 +7,6 @@
 
 import UIKit
 
-enum HomeSortingSelection{
-    case noSelection
-    case alphabeticallyAscending
-    case alphabeticallyDescending
-    case ascending
-    case descending
-}
-
-struct HomeListItemViewModel {
-    var pokemonName = ""
-    var pokemonId = ""
-}
-
-class HomeViewModel {
-    var sortingSelection = HomeSortingSelection.noSelection
-    var isLoading = false
-    var searchText = ""
-    var pokemonList = [HomeListItemViewModel]()
-}
-
 class SubtitleTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -49,7 +29,6 @@ class HomeViewController: UIViewController {
     private weak var numericSortButton: UIButton!
     private weak var pokeListTableView: UITableView!
 
-    private let pokeListTableViewReuseIdentifier = "pokeListTableViewReuseIdentifier"
 
     // MARK: ViewController Lifecycle
 
@@ -79,8 +58,90 @@ class HomeViewController: UIViewController {
         setupConstraints()
         setupStyles()
         updateViewContent()
+
+        //TODO: Refactor this
+        viewModel.stateUpdated = { [weak self] in
+            self?.updateViewContent()
+        }
+
+        viewModel.showAlert = { [weak self] (homeAlert) in
+//            UIAlertController
+        }
+
+    }
+    
+    // MARK: Public Methods
+    // MARK: Private Methods
+
+    private func updateViewContent() {
+
+        clearButton.isHidden = viewModel.sortingSelection == .noSelection
+
+        var alphabeticalImage: UIImage?
+        var numericImage: UIImage?
+        switch viewModel.sortingSelection {
+        case .noSelection:
+            alphabeticalImage = nil
+            numericImage = nil
+        case .alphabeticallyAscending:
+            alphabeticalImage = UIImage(systemName: "chevron.up",
+                                    withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
+            numericImage = nil
+        case .alphabeticallyDescending:
+            alphabeticalImage = UIImage(systemName: "chevron.down",
+                                    withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
+            numericImage = nil
+        case .ascending:
+            alphabeticalImage = nil
+            numericImage = UIImage(systemName: "chevron.up",
+                                    withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
+        case .descending:
+            alphabeticalImage = nil
+            numericImage = UIImage(systemName: "chevron.down",
+                                    withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
+        }
+        alphabeticalSortButton.setImage(alphabeticalImage, for: .normal)
+        numericSortButton.setImage(numericImage, for: .normal)
+
+        pokeListTableView.reloadData()
+
     }
 
+
+    // MARK: Events
+
+    @objc private func clearButtonTapped() {
+        viewModel.sortingSelection = .noSelection
+        updateViewContent()
+    }
+
+    @objc private func sortAlphabeticallyTapped() {
+        switch viewModel.sortingSelection {
+        case .noSelection, .ascending, .descending, .alphabeticallyDescending:
+            viewModel.sortingSelection = .alphabeticallyAscending
+        case .alphabeticallyAscending:
+            viewModel.sortingSelection = .alphabeticallyDescending
+        }
+        updateViewContent()
+    }
+
+    @objc private func sortNumericallyTapped() {
+        switch viewModel.sortingSelection {
+        case .noSelection, .alphabeticallyAscending, .alphabeticallyDescending, .descending:
+            viewModel.sortingSelection = .ascending
+        case .ascending:
+            viewModel.sortingSelection = .descending
+        }
+        updateViewContent()
+    }
+
+
+
+}
+
+// MARK: Extensions
+
+extension HomeViewController {
     // MARK: UI Creation
 
     private func createSubViews() {
@@ -122,12 +183,12 @@ class HomeViewController: UIViewController {
     private func createPokeListTableView() {
         let pokeListTableView = UITableView()
         view.addSubViewForAutolayout(pokeListTableView)
-        pokeListTableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: pokeListTableViewReuseIdentifier)
-        pokeListTableView.dataSource = self
-        pokeListTableView.delegate = self
+        pokeListTableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: HomeListItemViewModel.pokeListTableViewReuseIdentifier)
+        pokeListTableView.dataSource = viewModel
+        pokeListTableView.delegate = viewModel
         self.pokeListTableView = pokeListTableView
     }
-    
+
     private func setupConstraints() {
         //        NSLayoutConstraint(
         NSLayoutConstraint.activate([searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -167,11 +228,6 @@ class HomeViewController: UIViewController {
     private func setupStyles() {
 
         searchBar.placeholder = NSLocalizedString("Home_SearchBar_Title", comment: "")
-        // TODO: customize UI
-        //        searchBar.sizeToFit()
-        //        searchBar.barTintColor = navigationController?.navigationBar.barTintColor
-        //        searchBar.tintColor = self.view.tintColor
-        //        searchBar.right
 
         clearButton.setTitle(NSLocalizedString("Home_ClearSort_Title", comment: ""), for: .normal)
         clearButton.backgroundColor = .clear
@@ -195,104 +251,5 @@ class HomeViewController: UIViewController {
 
     }
 
-    private func updateViewContent() {
-
-        clearButton.isHidden = viewModel.sortingSelection == .noSelection
-
-        var alphabeticalImage: UIImage?
-        var numericImage: UIImage?
-        switch viewModel.sortingSelection {
-        case .noSelection:
-            alphabeticalImage = nil
-            numericImage = nil
-        case .alphabeticallyAscending:
-            alphabeticalImage = UIImage(systemName: "chevron.up",
-                                    withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
-            numericImage = nil
-        case .alphabeticallyDescending:
-            alphabeticalImage = UIImage(systemName: "chevron.down",
-                                    withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
-            numericImage = nil
-        case .ascending:
-            alphabeticalImage = nil
-            numericImage = UIImage(systemName: "chevron.up",
-                                    withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
-        case .descending:
-            alphabeticalImage = nil
-            numericImage = UIImage(systemName: "chevron.down",
-                                    withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
-        }
-        alphabeticalSortButton.setImage(alphabeticalImage, for: .normal)
-        numericSortButton.setImage(numericImage, for: .normal)
-
-        pokeListTableView.reloadData()
-
-    }
-
-    // MARK: Events
-
-    @objc private func clearButtonTapped() {
-        viewModel.sortingSelection = .noSelection
-        updateViewContent()
-    }
-
-    @objc private func sortAlphabeticallyTapped() {
-        switch viewModel.sortingSelection {
-        case .noSelection, .ascending, .descending, .alphabeticallyDescending:
-            viewModel.sortingSelection = .alphabeticallyAscending
-        case .alphabeticallyAscending:
-            viewModel.sortingSelection = .alphabeticallyDescending
-        }
-        updateViewContent()
-    }
-
-    @objc private func sortNumericallyTapped() {
-        switch viewModel.sortingSelection {
-        case .noSelection, .alphabeticallyAscending, .alphabeticallyDescending, .descending:
-            viewModel.sortingSelection = .ascending
-        case .ascending:
-            viewModel.sortingSelection = .descending
-        }
-        updateViewContent()
-    }
-
-    // MARK: Public Methods
-    // MARK: Private Methods
-
-    private func getSortedPokemonList(homeListItemViewModels:[HomeListItemViewModel], currentSortSelection: HomeSortingSelection) -> [HomeListItemViewModel] {
-        switch currentSortSelection {
-        case .noSelection:
-            return homeListItemViewModels
-        case .alphabeticallyAscending:
-            return homeListItemViewModels.sorted{ $0.pokemonName < $1.pokemonName }
-        case .alphabeticallyDescending:
-            return homeListItemViewModels.sorted{ $0.pokemonName > $1.pokemonName }
-        case .ascending:
-            return homeListItemViewModels.sorted{ Int($0.pokemonId) ?? 0 < Int($1.pokemonId) ?? 0 }
-        case .descending:
-            return homeListItemViewModels.sorted{ Int($0.pokemonId) ?? 0 > Int($1.pokemonId) ?? 0}
-        }
-    }
-}
-
-// MARK: Extensions
-extension HomeViewController : UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.pokemonList.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: pokeListTableViewReuseIdentifier, for: indexPath)
-
-        if viewModel.pokemonList.count <= indexPath.row {
-            return UITableViewCell()
-        }
-
-        let currentViewModel = getSortedPokemonList(homeListItemViewModels: viewModel.pokemonList, currentSortSelection: viewModel.sortingSelection) [indexPath.row]
-        cell.textLabel?.text = currentViewModel.pokemonName
-        cell.detailTextLabel?.text = NSLocalizedString("Home_ListItem_SubTitlePrefix", comment: "") + (currentViewModel.pokemonId)
-
-        return cell
-    }
 
 }

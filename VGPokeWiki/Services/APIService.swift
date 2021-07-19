@@ -7,20 +7,6 @@
 
 import Foundation
 
-struct Constants {
-    static let baseURL = "https://pokeapi.co/api/v2"
-    static let pokemonListURL = baseURL + "/pokemon/?offset=0&limit=10"
-}
-
-struct PokemonData: Decodable {
-    var name, url: String?
-}
-
-struct PokemonListResponseData: Decodable {
-    var next: String?
-    var results: [PokemonData]?
-}
-
 class APIService :  NSObject {
 
     func getPokemonList(nextUrl: String, completion : @escaping (PokemonListResponseData, Error?) -> ()){

@@ -118,18 +118,26 @@ extension HomeViewModel : UITableViewDelegate, UITableViewDataSource {
         pokemonList.count
     }
 
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64.0
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: HomeListItemViewModel.pokeListTableViewReuseIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: HomeListItemViewModel.pokeListTableViewReuseIdentifier, for: indexPath) as? HomeListItemCell
 
         if pokemonList.count <= indexPath.row {
             return UITableViewCell()
         }
 
         let currentViewModel = getSortedPokemonList(homeListItemViewModels: pokemonList, currentSortSelection: sortingSelection) [indexPath.row]
-        cell.textLabel?.text = currentViewModel.pokemonName.capitalized
-        cell.detailTextLabel?.text = NSLocalizedString("Home_ListItem_SubTitlePrefix", comment: "") + (currentViewModel.pokemonId)
+        cell?.pokemonTitleLabel.text = currentViewModel.pokemonName.capitalized
+        cell?.pokemonIdLabel.text = NSLocalizedString("Home_ListItem_SubTitlePrefix", comment: "") + (currentViewModel.pokemonId)
+        if let url = URL(string: Constants.pokemonThumbImageURL + "\(currentViewModel.pokemonId).png")
+        {
+            cell?.pokemonImageView.loadImageWithUrl(url)
+        }
 
-        return cell
+        return cell ?? UITableViewCell()
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

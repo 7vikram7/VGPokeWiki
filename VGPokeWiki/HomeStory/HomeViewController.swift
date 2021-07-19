@@ -7,16 +7,6 @@
 
 import UIKit
 
-class SubtitleTableViewCell: UITableViewCell {
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-}
 class HomeViewController: UIViewController {
     // MARK: Public Properties
     var viewModel : HomeViewModelProtocol!
@@ -173,7 +163,7 @@ extension HomeViewController {
     private func createPokeListTableView() {
         let pokeListTableView = UITableView()
         view.addSubViewForAutolayout(pokeListTableView)
-        pokeListTableView.register(SubtitleTableViewCell.self, forCellReuseIdentifier: HomeListItemViewModel.pokeListTableViewReuseIdentifier)
+        pokeListTableView.register(HomeListItemCell.self, forCellReuseIdentifier: HomeListItemViewModel.pokeListTableViewReuseIdentifier)
         pokeListTableView.dataSource = viewModel
         pokeListTableView.delegate = viewModel
         self.pokeListTableView = pokeListTableView
@@ -232,6 +222,8 @@ extension HomeViewController {
 
         //TODO: refactor with primary and secondary colors keeping in mind dark mode
         searchBar.placeholder = NSLocalizedString("Home_SearchBar_Title", comment: "")
+
+        sortView.backgroundColor = .darkGray
 
         clearButton.setTitle(NSLocalizedString("Home_ClearSort_Title", comment: ""), for: .normal)
         clearButton.backgroundColor = .clear

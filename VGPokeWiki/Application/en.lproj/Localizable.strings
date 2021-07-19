@@ -12,3 +12,11 @@
 "Home_ListItem_SubTitlePrefix" = "Pokemon ID: ";
 "Home_ClearSort_Title" = "Clear";
 
+"Home_Alert_GetPokemonListFailed" = "We are facing issues with fetching your favourite Pokemons. Please try again later!";
+"Home_Alert_MaximumPokemonsFetched" = "You have reached the limit of the number of pokemons which can fetched!";
+
+// Generic
+"Oops" = "Oops";
+"Ok" = "Ok";
+"Error" = "Error";
+"Alert" = "Alert";

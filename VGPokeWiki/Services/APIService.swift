@@ -9,7 +9,7 @@ import Foundation
 
 struct Constants {
     static let baseURL = "https://pokeapi.co/api/v2"
-    static let pokemonListURL = baseURL + "/pokemon/?offset=0&limit=20"
+    static let pokemonListURL = baseURL + "/pokemon/?offset=0&limit=10"
 }
 
 struct PokemonData: Decodable {

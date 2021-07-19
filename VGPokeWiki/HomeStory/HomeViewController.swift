@@ -14,66 +14,42 @@ class SubtitleTableViewCell: UITableViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
 }
 class HomeViewController: UIViewController {
+    // MARK: Public Properties
+    var viewModel : HomeViewModelProtocol!
 
-    // MARK: Properties
-    var viewModel : HomeViewModel!
-
+    // MARK: Private Properties
     private weak var searchBar: UISearchBar!
     private weak var sortView: UIView!
     private weak var clearButton: UIButton!
     private weak var alphabeticalSortButton: UIButton!
     private weak var numericSortButton: UIButton!
     private weak var pokeListTableView: UITableView!
-
+    private weak var loadingIndicator: UIActivityIndicatorView!
 
     // MARK: ViewController Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
-        //TODO: remove this
-        let viewModel = HomeViewModel()
-        let pokemonList = [
-            HomeListItemViewModel(pokemonName: "Bulbasaur", pokemonId: "1"),
-            HomeListItemViewModel(pokemonName: "Aharmander", pokemonId: "2"),
-            HomeListItemViewModel(pokemonName: "Dulbasaur", pokemonId: "3"),
-            HomeListItemViewModel(pokemonName: "Charmander", pokemonId: "4"),
-            HomeListItemViewModel(pokemonName: "Bulbasaur", pokemonId: "5"),
-            HomeListItemViewModel(pokemonName: "Fharmander", pokemonId: "6"),
-            HomeListItemViewModel(pokemonName: "Hulbasaur", pokemonId: "7"),
-            HomeListItemViewModel(pokemonName: "Iharmander", pokemonId: "8"),
-            HomeListItemViewModel(pokemonName: "Julbasaur", pokemonId: "9"),
-            HomeListItemViewModel(pokemonName: "Kulbasaur", pokemonId: "10"),
-            HomeListItemViewModel(pokemonName: "Eulbasaur", pokemonId: "11"),
-        ]
-        viewModel.pokemonList = pokemonList
-        self.viewModel = viewModel
-
+        self.navigationController?.isNavigationBarHidden = true
+        if viewModel == nil {
+            fatalError("ViewModel not assigned for Home View")
+        }
+        setupEventCallbacks()
         createSubViews()
         setupConstraints()
         setupStyles()
         updateViewContent()
-
-        //TODO: Refactor this
-        viewModel.stateUpdated = { [weak self] in
-            self?.updateViewContent()
-        }
-
-        viewModel.showAlert = { [weak self] (homeAlert) in
-//            UIAlertController
-        }
-
     }
     
     // MARK: Public Methods
     // MARK: Private Methods
 
     private func updateViewContent() {
+        viewModel.isLoading ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
+        view.isUserInteractionEnabled = !viewModel.isLoading
 
         clearButton.isHidden = viewModel.sortingSelection == .noSelection
 
@@ -107,36 +83,49 @@ class HomeViewController: UIViewController {
 
     }
 
+    private func displayAlert(alertType: HomeViewAlerts) {
+        var title, message, actionTitle: String?
+
+        switch alertType {
+        case .maximumPokemonsFetched:
+            title = NSLocalizedString("Alert", comment: "")
+            message = NSLocalizedString("Home_Alert_MaximumPokemonsFetched", comment: "")
+        case .getPokemonListFailed:
+            title = NSLocalizedString("Oops", comment: "")
+            message = NSLocalizedString("Home_Alert_GetPokemonListFailed", comment: "")
+        }
+
+        actionTitle = NSLocalizedString("Ok", comment: "")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: actionTitle, style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 
     // MARK: Events
+    private func setupEventCallbacks() {
+        viewModel.stateUpdated = { [weak self] in
+            self?.updateViewContent()
+        }
+
+        viewModel.showAlert = { [weak self] (homeAlert) in
+            self?.displayAlert(alertType: homeAlert)
+        }
+    }
 
     @objc private func clearButtonTapped() {
-        viewModel.sortingSelection = .noSelection
-        updateViewContent()
+        pokeListTableView.setContentOffset(.zero, animated: false)
+        viewModel.clearButtonEvent()
     }
 
     @objc private func sortAlphabeticallyTapped() {
-        switch viewModel.sortingSelection {
-        case .noSelection, .ascending, .descending, .alphabeticallyDescending:
-            viewModel.sortingSelection = .alphabeticallyAscending
-        case .alphabeticallyAscending:
-            viewModel.sortingSelection = .alphabeticallyDescending
-        }
-        updateViewContent()
+        pokeListTableView.setContentOffset(.zero, animated: false)
+        viewModel.sortAlphabeticallyEvent()
     }
 
     @objc private func sortNumericallyTapped() {
-        switch viewModel.sortingSelection {
-        case .noSelection, .alphabeticallyAscending, .alphabeticallyDescending, .descending:
-            viewModel.sortingSelection = .ascending
-        case .ascending:
-            viewModel.sortingSelection = .descending
-        }
-        updateViewContent()
+        pokeListTableView.setContentOffset(.zero, animated: false)
+        viewModel.sortNumericallyEvent()
     }
-
-
-
 }
 
 // MARK: Extensions
@@ -149,6 +138,7 @@ extension HomeViewController {
         createSortView()
         createSortButtons()
         createPokeListTableView()
+        createLoadingIndicator()
     }
 
     private func createSearchBar() {
@@ -189,8 +179,16 @@ extension HomeViewController {
         self.pokeListTableView = pokeListTableView
     }
 
+    private func createLoadingIndicator() {
+        let loadingIndicator = UIActivityIndicatorView()
+        view.addSubViewForAutolayout(loadingIndicator)
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.style = UIActivityIndicatorView.Style.medium
+        loadingIndicator.startAnimating();
+        self.loadingIndicator = loadingIndicator
+    }
+
     private func setupConstraints() {
-        //        NSLayoutConstraint(
         NSLayoutConstraint.activate([searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
                                      searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                                      searchBar.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
@@ -223,10 +221,16 @@ extension HomeViewController {
                                      pokeListTableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
                                      pokeListTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)])
 
+        NSLayoutConstraint.activate([loadingIndicator.widthAnchor.constraint(equalToConstant: 50.0),
+                                     loadingIndicator.heightAnchor.constraint(equalToConstant: 50.0),
+                                     loadingIndicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+                                     loadingIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)])
+
     }
 
     private func setupStyles() {
 
+        //TODO: refactor with primary and secondary colors keeping in mind dark mode
         searchBar.placeholder = NSLocalizedString("Home_SearchBar_Title", comment: "")
 
         clearButton.setTitle(NSLocalizedString("Home_ClearSort_Title", comment: ""), for: .normal)
@@ -248,8 +252,5 @@ extension HomeViewController {
         numericSortButton.layer.cornerRadius = 5
         numericSortButton.layer.borderWidth = 1
         numericSortButton.layer.borderColor = UIColor.white.cgColor
-
     }
-
-
 }

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B76A0C2226A0945200952D33 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76A0C2126A0945200952D33 /* APIService.swift */; };
 		B76A0C2A26A1E42700952D33 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76A0C2926A1E42700952D33 /* HomeViewModel.swift */; };
+		B76A0C2F26A5233600952D33 /* HomeEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76A0C2E26A5233600952D33 /* HomeEnums.swift */; };
+		B76A0C3426A5236300952D33 /* HomeViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76A0C3326A5236300952D33 /* HomeViewModelProtocol.swift */; };
 		B79C9117269E0746003106F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79C9116269E0746003106F5 /* AppDelegate.swift */; };
 		B79C9119269E0746003106F5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79C9118269E0746003106F5 /* SceneDelegate.swift */; };
 		B79C911B269E0746003106F5 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79C911A269E0746003106F5 /* HomeViewController.swift */; };
@@ -41,6 +43,8 @@
 /* Begin PBXFileReference section */
 		B76A0C2126A0945200952D33 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		B76A0C2926A1E42700952D33 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		B76A0C2E26A5233600952D33 /* HomeEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEnums.swift; sourceTree = "<group>"; };
+		B76A0C3326A5236300952D33 /* HomeViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelProtocol.swift; sourceTree = "<group>"; };
 		B79C9113269E0746003106F5 /* VGPokeWiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VGPokeWiki.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B79C9116269E0746003106F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B79C9118269E0746003106F5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -148,6 +152,8 @@
 			children = (
 				B79C911A269E0746003106F5 /* HomeViewController.swift */,
 				B76A0C2926A1E42700952D33 /* HomeViewModel.swift */,
+				B76A0C2E26A5233600952D33 /* HomeEnums.swift */,
+				B76A0C3326A5236300952D33 /* HomeViewModelProtocol.swift */,
 			);
 			path = HomeStory;
 			sourceTree = "<group>";
@@ -310,9 +316,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B76A0C3426A5236300952D33 /* HomeViewModelProtocol.swift in Sources */,
 				B79C911B269E0746003106F5 /* HomeViewController.swift in Sources */,
 				B79C9117269E0746003106F5 /* AppDelegate.swift in Sources */,
 				B76A0C2A26A1E42700952D33 /* HomeViewModel.swift in Sources */,
+				B76A0C2F26A5233600952D33 /* HomeEnums.swift in Sources */,
 				B79C9119269E0746003106F5 /* SceneDelegate.swift in Sources */,
 				B79C915C269EBE25003106F5 /* PokemonDetailsViewController.swift in Sources */,
 				B76A0C2226A0945200952D33 /* APIService.swift in Sources */,

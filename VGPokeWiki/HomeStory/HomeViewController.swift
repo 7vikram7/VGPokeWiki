@@ -83,6 +83,12 @@ class HomeViewController: UIViewController {
         case .getPokemonListFailed:
             title = NSLocalizedString("Oops", comment: "")
             message = NSLocalizedString("Home_Alert_GetPokemonListFailed", comment: "")
+        case .getPokemonDetailsFailedForTapOnList:
+            title = NSLocalizedString("Oops", comment: "")
+            message = NSLocalizedString("Home_Alert_GetPokemonDetailsFailedOnTapOfList", comment: "")
+        case .getPokemonDetailsFailedForSearch:
+            title = NSLocalizedString("Alert", comment: "")
+            message = NSLocalizedString("Home_Alert_GetPokemonDetailsFailedOnSearch", comment: "")
         }
 
         actionTitle = NSLocalizedString("Ok", comment: "")
@@ -173,7 +179,6 @@ extension HomeViewController {
         let loadingIndicator = UIActivityIndicatorView()
         view.addSubViewForAutolayout(loadingIndicator)
         loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.style = UIActivityIndicatorView.Style.medium
         loadingIndicator.startAnimating();
         self.loadingIndicator = loadingIndicator
     }
@@ -244,5 +249,11 @@ extension HomeViewController {
         numericSortButton.layer.cornerRadius = 5
         numericSortButton.layer.borderWidth = 1
         numericSortButton.layer.borderColor = UIColor.white.cgColor
+
+        loadingIndicator.style = UIActivityIndicatorView.Style.medium
+        loadingIndicator.layer.cornerRadius = 5.0
+        loadingIndicator.alpha = 0.3
+        loadingIndicator.backgroundColor = .gray
+
     }
 }

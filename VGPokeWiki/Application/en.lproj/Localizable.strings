@@ -14,6 +14,8 @@
 
 "Home_Alert_GetPokemonListFailed" = "We are facing issues with fetching your favourite Pokemons. Please try again later!";
 "Home_Alert_MaximumPokemonsFetched" = "You have reached the limit of the number of pokemons which can fetched!";
+"Home_Alert_GetPokemonDetailsFailedOnTapOfList" = "We could not fetch the details for the selected Pokemon. Please try again later!";
+"Home_Alert_GetPokemonDetailsFailedOnSearch" = "Could not find the pokemon! Please enter the correct Id or Name.";
 
 // Generic
 "Oops" = "Oops";

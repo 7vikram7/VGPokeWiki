@@ -17,5 +17,7 @@ enum HomeSortingSelection{
 
 enum HomeViewAlerts {
     case getPokemonListFailed
+    case getPokemonDetailsFailedForTapOnList
+    case getPokemonDetailsFailedForSearch
     case maximumPokemonsFetched
 }

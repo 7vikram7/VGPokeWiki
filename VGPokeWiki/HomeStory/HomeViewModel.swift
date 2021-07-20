@@ -39,7 +39,7 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
     // MARK: Initialization
     override init() {
         super.init()
-        getPokemonDetails(apiService: apiService)
+        getPokemonList(apiService: apiService)
     }
 
     // MARK: Public Methods
@@ -50,7 +50,7 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
     }
 
     // MARK: Private Methods
-    private func getPokemonDetails(apiService: APIService) {
+    private func getPokemonList(apiService: APIService) {
 
         isLoading = true
         self.stateUpdated()
@@ -59,8 +59,8 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
             DispatchQueue.main.async {
                 self?.isLoading = false
                 if error == nil {
-                    self?.nextUrl = responsePokemonListResponseData.next ?? ""
-                    self?.pokemonDataList.append(contentsOf: responsePokemonListResponseData.results ?? [])
+                    self?.nextUrl = responsePokemonListResponseData?.next ?? ""
+                    self?.pokemonDataList.append(contentsOf: responsePokemonListResponseData?.results ?? [])
                 } else {
                     self?.showAlert(HomeViewAlerts.getPokemonListFailed)
                 }
@@ -82,6 +82,28 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
         case .descending:
             return homeListItemViewModels.sorted{ Int($0.pokemonId) ?? 0 > Int($1.pokemonId) ?? 0}
         }
+    }
+
+    private func getPokemonDetails(apiService: APIService, searchString: String) {
+
+        isLoading = true
+        self.stateUpdated()
+
+        apiService.getPokemonDetails(searchString: searchString, completion: { [weak self] (pokemonDetailsResponseData, error) in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                if let pokemonDetailsResponseData = pokemonDetailsResponseData, error == nil {
+
+                    let pokemonDetailsViewModel = PokemonDetailsViewModel(pokemonDetailsResponseData: pokemonDetailsResponseData)
+
+
+
+                } else {
+                    self?.showAlert(HomeViewAlerts.getPokemonDetailsFailedForTapOnList)
+                }
+                self?.stateUpdated()
+            }
+        })
     }
 
     // MARK: Events
@@ -140,6 +162,11 @@ extension HomeViewModel : UITableViewDelegate, UITableViewDataSource {
         return cell ?? UITableViewCell()
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentViewModel = getSortedPokemonList(homeListItemViewModels: pokemonList, currentSortSelection: sortingSelection) [indexPath.row]
+        getPokemonDetails(apiService: apiService, searchString: currentViewModel.pokemonName)
+    }
+
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
 
         let currentOffset = scrollView.contentOffset.y
@@ -147,7 +174,7 @@ extension HomeViewModel : UITableViewDelegate, UITableViewDataSource {
 
         if maximumOffset - currentOffset <= 10.0 {
             if pokemonDataList.count < maximumPokemonInList {
-                getPokemonDetails(apiService: apiService)
+                getPokemonList(apiService: apiService)
             } else {
                 showAlert(HomeViewAlerts.maximumPokemonsFetched)
             }

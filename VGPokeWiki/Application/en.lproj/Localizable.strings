@@ -17,6 +17,12 @@
 "Home_Alert_GetPokemonDetailsFailedOnTapOfList" = "We could not fetch the details for the selected Pokemon. Please try again later!";
 "Home_Alert_GetPokemonDetailsFailedOnSearch" = "Could not find the pokemon! Please enter the correct Id or Name.";
 
+//Pokemon Details Story
+"PokemonDetails_ListItem_Weight" = "Weight";
+"PokemonDetails_ListItem_WeightUnit" = "Kg";
+"PokemonDetails_ListItem_Abilities" = "Abilities";
+"PokemonDetails_ListItem_Type" = "Type";
+
 // Generic
 "Oops" = "Oops";
 "Ok" = "Ok";

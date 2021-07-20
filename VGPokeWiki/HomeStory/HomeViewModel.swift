@@ -21,10 +21,11 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
     var searchText = ""
     var pokemonList = [HomeListItemViewModel]()
 
-    // MARK: Private Properties
     var stateUpdated: ()->() = {}
     var showAlert: (HomeViewAlerts)->() = {_ in }
+    var navigateToController: (UIViewController)->() = {_ in }
 
+    // MARK: Private Properties
     private let maximumPokemonInList = 300
     private var apiService = APIService()
     private var nextUrl = ""
@@ -93,17 +94,20 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
             DispatchQueue.main.async {
                 self?.isLoading = false
                 if let pokemonDetailsResponseData = pokemonDetailsResponseData, error == nil {
-
                     let pokemonDetailsViewModel = PokemonDetailsViewModel(pokemonDetailsResponseData: pokemonDetailsResponseData)
-
-
-
+                    self?.navigateToPokemonDetails(pokemonDetailsViewModel:pokemonDetailsViewModel)
                 } else {
                     self?.showAlert(HomeViewAlerts.getPokemonDetailsFailedForTapOnList)
                 }
                 self?.stateUpdated()
             }
         })
+    }
+
+    private func navigateToPokemonDetails(pokemonDetailsViewModel: PokemonDetailsViewModel) {
+        let pokemonDetailsViewController = PokemonDetailsViewController()
+        pokemonDetailsViewController.viewModel = pokemonDetailsViewModel
+        navigateToController(pokemonDetailsViewController)
     }
 
     // MARK: Events

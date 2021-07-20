@@ -26,6 +26,7 @@ struct AbilityDetails: Decodable {
 struct PokemonDetailsResponseData: Decodable {
     var weight: Int?
     var id: Int?
+    var name: String?
     var abilities: [AbilityDetails]?
     var types: [TypeDetails]?
 }

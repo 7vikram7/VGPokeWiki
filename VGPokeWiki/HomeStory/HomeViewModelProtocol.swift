@@ -16,6 +16,7 @@ protocol HomeViewModelProtocol: UITableViewDelegate, UITableViewDataSource {
 
     var stateUpdated: ()->() { get set }
     var showAlert: (HomeViewAlerts)->() { get set }
+    var navigateToController: (UIViewController)->() { get set }
 
     func clearButtonEvent()
     func sortAlphabeticallyEvent()

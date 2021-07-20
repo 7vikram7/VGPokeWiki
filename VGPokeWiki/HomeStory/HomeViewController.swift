@@ -23,7 +23,6 @@ class HomeViewController: UIViewController {
     // MARK: ViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.isNavigationBarHidden = true
         if viewModel == nil {
             fatalError("ViewModel not assigned for Home View")
         }
@@ -32,6 +31,11 @@ class HomeViewController: UIViewController {
         setupConstraints()
         setupStyles()
         updateViewContent()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: Public Methods
@@ -105,6 +109,10 @@ class HomeViewController: UIViewController {
 
         viewModel.showAlert = { [weak self] (homeAlert) in
             self?.displayAlert(alertType: homeAlert)
+        }
+
+        viewModel.navigateToController = { [weak self] (viewController) in
+            self?.navigationController?.pushViewController(viewController, animated: true)
         }
     }
 

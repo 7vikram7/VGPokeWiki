@@ -26,22 +26,21 @@ class HomeViewController: UIViewController {
         if viewModel == nil {
             fatalError("ViewModel not assigned for Home View")
         }
+        self.title = "VGPokeWiki"
         setupEventCallbacks()
         createSubViews()
         setupConstraints()
         setupStyles()
         updateViewContent()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
-    }
     
     // MARK: Public Methods
     // MARK: Private Methods
 
     private func updateViewContent() {
+
+        searchBar.text = viewModel.searchText
+
         viewModel.isLoading ? loadingIndicator.startAnimating() : loadingIndicator.stopAnimating()
         view.isUserInteractionEnabled = !viewModel.isLoading
 
@@ -93,6 +92,8 @@ class HomeViewController: UIViewController {
         case .getPokemonDetailsFailedForSearch:
             title = NSLocalizedString("Alert", comment: "")
             message = NSLocalizedString("Home_Alert_GetPokemonDetailsFailedOnSearch", comment: "")
+        case .emptyPokemonSearch:
+            message = NSLocalizedString("Home_Alert_EmptyPokemonSearch", comment: "")
         }
 
         actionTitle = NSLocalizedString("Ok", comment: "")
@@ -148,6 +149,9 @@ extension HomeViewController {
     private func createSearchBar() {
         let searchBar = UISearchBar()
         view.addSubViewForAutolayout(searchBar)
+        searchBar.showsCancelButton = true
+        searchBar.searchTextField.delegate = viewModel
+        searchBar.delegate = viewModel
         self.searchBar = searchBar
     }
 
@@ -235,6 +239,10 @@ extension HomeViewController {
 
         //TODO: refactor with primary and secondary colors keeping in mind dark mode
         searchBar.placeholder = NSLocalizedString("Home_SearchBar_Title", comment: "")
+        searchBar.autocapitalizationType = .none
+        searchBar.tintColor = .darkGray
+        searchBar.backgroundColor = .darkGray
+        searchBar.sizeToFit()
 
         sortView.backgroundColor = .darkGray
 
@@ -260,8 +268,9 @@ extension HomeViewController {
 
         loadingIndicator.style = UIActivityIndicatorView.Style.medium
         loadingIndicator.layer.cornerRadius = 5.0
-        loadingIndicator.alpha = 0.3
-        loadingIndicator.backgroundColor = .gray
+        loadingIndicator.alpha = 0.85
+        loadingIndicator.color = .white
+        loadingIndicator.backgroundColor = .darkGray
 
     }
 }

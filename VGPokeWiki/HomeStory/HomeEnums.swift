@@ -20,4 +20,5 @@ enum HomeViewAlerts {
     case getPokemonDetailsFailedForTapOnList
     case getPokemonDetailsFailedForSearch
     case maximumPokemonsFetched
+    case emptyPokemonSearch
 }

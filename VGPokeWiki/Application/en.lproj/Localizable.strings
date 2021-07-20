@@ -8,7 +8,7 @@
 
 //Home Story
 
-"Home_SearchBar_Title" = "Pokemon name/id (eg. Bulbasaur/1)";
+"Home_SearchBar_Title" = "name/id (eg. eevee or 133)";
 "Home_ListItem_SubTitlePrefix" = "Pokemon ID: ";
 "Home_ClearSort_Title" = "Clear";
 
@@ -16,7 +16,7 @@
 "Home_Alert_MaximumPokemonsFetched" = "You have reached the limit of the number of pokemons which can fetched!";
 "Home_Alert_GetPokemonDetailsFailedOnTapOfList" = "We could not fetch the details for the selected Pokemon. Please try again later!";
 "Home_Alert_GetPokemonDetailsFailedOnSearch" = "Could not find the pokemon! Please enter the correct Id or Name.";
-
+"Home_Alert_EmptyPokemonSearch" = "Please enter name/id to search a pokemon.";
 //Pokemon Details Story
 "PokemonDetails_ListItem_Weight" = "Weight";
 "PokemonDetails_ListItem_WeightUnit" = "Lb";

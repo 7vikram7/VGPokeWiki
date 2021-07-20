@@ -88,7 +88,7 @@ extension PokemonDetailsViewController {
 
         //TODO: refactor with primary and secondary colors keeping in mind dark mode
 
-        pokemonImageView.backgroundColor = .darkGray
+        pokemonImageView.backgroundColor = .white
 
         pokemonDetailsTableView.bounces = false
         pokemonDetailsTableView.showsVerticalScrollIndicator = false

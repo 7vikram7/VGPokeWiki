@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol HomeViewModelProtocol: UITableViewDelegate, UITableViewDataSource {
+protocol HomeViewModelProtocol: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate,UITextFieldDelegate {
     var sortingSelection: HomeSortingSelection { get set }
     var isLoading: Bool { get set }
     var searchText: String { get set }

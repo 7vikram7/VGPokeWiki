@@ -17,13 +17,16 @@ class APIService :  NSObject {
 
                     let jsonDecoder = JSONDecoder()
 
-                    let pokemonListResponseData = try! jsonDecoder.decode(PokemonListResponseData.self, from: data)
-                    completion(pokemonListResponseData, error)
+                    if let pokemonListResponseData = try? jsonDecoder.decode(PokemonListResponseData.self, from: data)
+                    {
+                        completion(pokemonListResponseData, error)
+                    } else {
+                        completion(nil, NSError(domain: "", code:0, userInfo: nil))
+                    }
                 }
             }.resume()
         } else {
-            let error = NSError(domain: "", code:0, userInfo: nil)
-            completion(nil, error)
+            completion(nil, NSError(domain: "", code:0, userInfo: nil))
         }
     }
 
@@ -35,13 +38,15 @@ class APIService :  NSObject {
 
                     let jsonDecoder = JSONDecoder()
 
-                    let pokemonDetailsResponseData = try! jsonDecoder.decode(PokemonDetailsResponseData.self, from: data)
-                    completion(pokemonDetailsResponseData, error)
+                    if let pokemonDetailsResponseData = try? jsonDecoder.decode(PokemonDetailsResponseData.self, from: data) {
+                        completion(pokemonDetailsResponseData, error)
+                    } else {
+                        completion(nil, NSError(domain: "", code:0, userInfo: nil))
+                    }
                 }
             }.resume()
         } else {
-            let error = NSError(domain: "", code:0, userInfo: nil)
-            completion(nil, error)
+            completion(nil, NSError(domain: "", code:0, userInfo: nil))
         }
     }
 

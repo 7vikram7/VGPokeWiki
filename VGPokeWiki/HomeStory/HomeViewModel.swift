@@ -85,7 +85,7 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
         }
     }
 
-    private func getPokemonDetails(apiService: APIService, searchString: String) {
+    private func getPokemonDetails(apiService: APIService, searchString: String, isViaTap: Bool = true) {
 
         isLoading = true
         self.stateUpdated()
@@ -95,9 +95,14 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
                 self?.isLoading = false
                 if let pokemonDetailsResponseData = pokemonDetailsResponseData, error == nil {
                     let pokemonDetailsViewModel = PokemonDetailsViewModel(pokemonDetailsResponseData: pokemonDetailsResponseData)
+                    self?.searchText = ""
                     self?.navigateToPokemonDetails(pokemonDetailsViewModel:pokemonDetailsViewModel)
                 } else {
-                    self?.showAlert(HomeViewAlerts.getPokemonDetailsFailedForTapOnList)
+                    if isViaTap {
+                        self?.showAlert(HomeViewAlerts.getPokemonDetailsFailedForTapOnList)
+                    } else {
+                        self?.showAlert(HomeViewAlerts.getPokemonDetailsFailedForSearch)
+                    }
                 }
                 self?.stateUpdated()
             }
@@ -183,5 +188,32 @@ extension HomeViewModel : UITableViewDelegate, UITableViewDataSource {
                 showAlert(HomeViewAlerts.maximumPokemonsFetched)
             }
         }
+    }
+}
+
+extension HomeViewModel: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let allowedCharacters = "0123456789abcdefghijklmnopqrstuvwxyz"
+        let aSet = NSCharacterSet(charactersIn:allowedCharacters).inverted
+        let compSepByCharInSet = text.components(separatedBy: aSet)
+        let numberFiltered = compSepByCharInSet.joined(separator: "")
+        return text == numberFiltered
+    }
+}
+
+extension HomeViewModel: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if let searchText = textField.text {
+            getPokemonDetails(apiService: apiService, searchString: searchText, isViaTap: false)
+        } else {
+            showAlert(HomeViewAlerts.emptyPokemonSearch)
+        }
+        return true
     }
 }

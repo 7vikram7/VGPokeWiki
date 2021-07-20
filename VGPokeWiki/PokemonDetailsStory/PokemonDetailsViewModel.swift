@@ -8,18 +8,6 @@
 import Foundation
 import UIKit
 
-class PokemonDetailsListCell: UITableViewCell {
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        self.selectionStyle = .none
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-}
-
 struct PokemonDetailsListItemViewModel {
     static let pokemonDetailsLisReuseIdentifier = "pokemonDetailsLisReuseIdentifier"
     var title = ""

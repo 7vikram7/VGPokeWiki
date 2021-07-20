@@ -19,7 +19,7 @@
 
 //Pokemon Details Story
 "PokemonDetails_ListItem_Weight" = "Weight";
-"PokemonDetails_ListItem_WeightUnit" = "Kg";
+"PokemonDetails_ListItem_WeightUnit" = "Lb";
 "PokemonDetails_ListItem_Abilities" = "Abilities";
 "PokemonDetails_ListItem_Type" = "Type";
 

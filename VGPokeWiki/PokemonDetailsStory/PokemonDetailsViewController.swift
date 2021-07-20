@@ -33,7 +33,7 @@ class PokemonDetailsViewController: UIViewController {
 
     private func updateViewContent() {
 
-        self.navigationController?.title = viewModel.name
+        self.title = viewModel.name?.capitalized
 
         if let imageURL = viewModel.imageURL{
             pokemonImageView.loadImageWithUrl(imageURL)

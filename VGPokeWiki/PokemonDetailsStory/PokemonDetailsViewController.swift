@@ -35,8 +35,8 @@ class PokemonDetailsViewController: UIViewController {
 
         self.title = viewModel.name?.capitalized
 
-        if let imageURL = viewModel.imageURL{
-            pokemonImageView.loadImageWithUrl(imageURL)
+        if let urlString = viewModel.imageURL, let url = URL(string:urlString) {
+            pokemonImageView.loadImageWithUrl(url)
         }
         pokemonDetailsTableView.reloadData()
 

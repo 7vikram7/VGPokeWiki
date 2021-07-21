@@ -14,27 +14,23 @@ struct PokemonDetailsListItemViewModel {
     var details = ""
 }
 
-class PokemonDetailsViewModel: NSObject, PokemonDetailsViewModelProtocol {
+class PokemonDetailsViewModel: NSObject, PokemonDetailsViewModelProtocol, Codable {
 
     // MARK: Public Properties
-    var imageURL: URL?
-    var weight: Int?
+    var imageURL: String?
+    var weight: String?
     var name: String?
     var abilities: [String]?
     var types: [String]?
 
-    // MARK: Private Properties
-    private var pokemonDetailsResponseData: PokemonDetailsResponseData!
-
     // MARK: Initialization
     init(pokemonDetailsResponseData: PokemonDetailsResponseData) {
         super.init()
-        self.imageURL = URL(string: "\(Constants.pokemonFullImageURL)\(pokemonDetailsResponseData.id ?? 0).png")
-        self.weight = pokemonDetailsResponseData.weight
+        self.imageURL = "\(Constants.pokemonFullImageURL)\(pokemonDetailsResponseData.id ?? 0).png"
+        self.weight = "\(pokemonDetailsResponseData.weight ?? 0)"
         self.name = pokemonDetailsResponseData.name
         self.abilities = pokemonDetailsResponseData.abilities?.map{ $0.ability?.name ?? ""}
         self.types = pokemonDetailsResponseData.types?.map{ $0.type?.name  ?? ""}
-        self.pokemonDetailsResponseData = pokemonDetailsResponseData
     }
 
     // MARK: Public Methods
@@ -67,7 +63,7 @@ extension PokemonDetailsViewModel : UITableViewDelegate, UITableViewDataSource {
         switch row {
         case 0:
             titleText = NSLocalizedString("PokemonDetails_ListItem_Weight", comment: "")
-            detailsText = "\(weight ?? 0) \(NSLocalizedString("PokemonDetails_ListItem_WeightUnit", comment: ""))"
+            detailsText = "\(weight ?? "") \(NSLocalizedString("PokemonDetails_ListItem_WeightUnit", comment: ""))"
         case 1:
             titleText = NSLocalizedString("PokemonDetails_ListItem_Abilities", comment: "")
             detailsText = abilities?.map{$0.capitalized}.joined(separator: ", ")

@@ -28,6 +28,7 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
     // MARK: Private Properties
     private let maximumPokemonInList = 300
     private var apiService = APIService()
+    private var cacheService = CacheService()
     private var nextUrl = ""
     private var pokemonDataList = [PokemonData]() {
         didSet {
@@ -85,7 +86,17 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
         }
     }
 
-    private func getPokemonDetails(apiService: APIService, searchString: String, isViaTap: Bool = true) {
+    private func getPokemonDetailsFromCache(cacheService: CacheService, searchString: String, isViaTap: Bool = true) {
+        if let pokemonDetailsViewModel = cacheService.getPokemonDetailsfromCacheifPresent(pokemonName: searchString) {
+            searchText = ""
+            stateUpdated()
+            self.navigateToPokemonDetails(pokemonDetailsViewModel:pokemonDetailsViewModel)
+        } else {
+            getPokemonDetails(apiService: apiService, cacheService: cacheService, searchString: searchString, isViaTap: isViaTap)
+        }
+    }
+
+    private func getPokemonDetails(apiService: APIService, cacheService:CacheService, searchString: String, isViaTap: Bool = true) {
 
         isLoading = true
         self.stateUpdated()
@@ -96,6 +107,7 @@ class HomeViewModel: NSObject, HomeViewModelProtocol {
                 if let pokemonDetailsResponseData = pokemonDetailsResponseData, error == nil {
                     let pokemonDetailsViewModel = PokemonDetailsViewModel(pokemonDetailsResponseData: pokemonDetailsResponseData)
                     self?.searchText = ""
+                    self?.cacheService.savePokemonDetailInCache(pokemonDetailsViewModel: pokemonDetailsViewModel)
                     self?.navigateToPokemonDetails(pokemonDetailsViewModel:pokemonDetailsViewModel)
                 } else {
                     if isViaTap {
@@ -173,7 +185,7 @@ extension HomeViewModel : UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let currentViewModel = getSortedPokemonList(homeListItemViewModels: pokemonList, currentSortSelection: sortingSelection) [indexPath.row]
-        getPokemonDetails(apiService: apiService, searchString: currentViewModel.pokemonName)
+        getPokemonDetailsFromCache(cacheService: cacheService, searchString: currentViewModel.pokemonName)
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -210,7 +222,7 @@ extension HomeViewModel: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         if let searchText = textField.text {
-            getPokemonDetails(apiService: apiService, searchString: searchText, isViaTap: false)
+            getPokemonDetailsFromCache(cacheService: cacheService, searchString: searchText, isViaTap: false)
         } else {
             showAlert(HomeViewAlerts.emptyPokemonSearch)
         }
